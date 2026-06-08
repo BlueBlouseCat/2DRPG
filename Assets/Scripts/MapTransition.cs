@@ -23,6 +23,9 @@ public class MapTransition : MonoBehaviour
         {
             confiner.m_BoundingShape2D = mapBoundry;
             UpdatePlayerPosition(collision.gameObject);
+
+            MapController_Manual.Instance?.HighlightArea(mapBoundry.name); // mapBoundry是实际的地图边界，但由于每个地图边界的名字都和小地图对应上了，所以能正确高亮小地图
+            MapController_Dynamic.Instance?.UpdateCurrentArea(mapBoundry.name);
         }
     }
 
