@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Animator animator;
+    private bool playingFootSteps = false;
+    [SerializeField] private float footstepSpeed = 0.5f;
 
     void Start()
     {
@@ -23,10 +25,22 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = Vector2.zero; // 停止玩家移动
             animator.SetBool("isWalking", false);
+            // 停止脚步声
+            StopFootSteps();
             return;
         }
         rb.velocity = moveInput * moveSpeed;
         animator.SetBool("isWalking", rb.velocity.magnitude > 0);
+
+        // 开启脚步声
+        if(rb.velocity.magnitude > 0 && !playingFootSteps)
+        {
+            StartFootSteps();
+        }
+        else if(rb.velocity.magnitude == 0)
+        {
+            StopFootSteps();
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -40,5 +54,21 @@ public class PlayerMovement : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
+    }
+
+    private void StartFootSteps()
+    {
+        playingFootSteps = true;
+        InvokeRepeating(nameof(PlayFootstep), 0f, footstepSpeed);
+    }
+    private void StopFootSteps()
+    {
+        playingFootSteps = false;
+        CancelInvoke(nameof(PlayFootstep));
+    }
+
+    private void PlayFootstep()
+    {
+        SoundEffectManager.Play("Footstep", true);
     }
 }
