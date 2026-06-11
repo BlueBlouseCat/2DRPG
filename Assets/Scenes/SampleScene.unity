@@ -21661,6 +21661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690798832}
   - component: {fileID: 1690798833}
+  - component: {fileID: 1690798834}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -21695,6 +21696,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b079ac6e808af13468dc97b66668eb26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1690798834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690798831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d2d7c863924e42499845d09cfbbf452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 1759952001}
+  slotPrefab: {fileID: 2790834890838412429, guid: f16eff4b83b65914e875b89d4783eaee, type: 3}
+  slotCount: 24
+  itemPrefab: []
 --- !u!1 &1759952001
 GameObject:
   m_ObjectHideFlags: 0
@@ -21713,7 +21730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1759952002
 RectTransform:
   m_ObjectHideFlags: 0
