@@ -1,38 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 5f;
-    private Rigidbody2D _rb;
-    private Vector2 _moveInput;
-    private Animator _animator;
+    [SerializeField] private float moveSpeed = 5f;
+    private Rigidbody2D rb;
+    private Vector2 moveInput;
+    private Animator animator;
+    private bool playingFootSteps = false;
+    [SerializeField] private float footstepSpeed = 0.5f;
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _animator =  GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        animator =  GetComponent<Animator>();
     }
 
     void Update()
     {
-        _rb.velocity = _moveInput * _moveSpeed;
+        if(PauseController.IsGamePaused)
+        {
+            rb.velocity = Vector2.zero; // 停止玩家移动
+            animator.SetBool("isWalking", false);
+            // 停止脚步声
+            StopFootSteps();
+            return;
+        }
+        rb.velocity = moveInput * moveSpeed;
+        animator.SetBool("isWalking", rb.velocity.magnitude > 0);
+
+        // 开启脚步声
+        if(rb.velocity.magnitude > 0 && !playingFootSteps)
+        {
+            StartFootSteps();
+        }
+        else if(rb.velocity.magnitude == 0)
+        {
+            StopFootSteps();
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
     {
-        _animator.SetBool("isWalking", true);
-
         if(context.canceled)
         {
-            _animator.SetBool("isWalking", false);
-            _animator.SetFloat("LastInputX", _moveInput.x);
-            _animator.SetFloat("LastInputY", _moveInput.y);
+            animator.SetBool("isWalking", false);
+            animator.SetFloat("LastInputX", moveInput.x);
+            animator.SetFloat("LastInputY", moveInput.y);
         }
-        _moveInput = context.ReadValue<Vector2>();
-        _animator.SetFloat("InputX", _moveInput.x);
-        _animator.SetFloat("InputY", _moveInput.y);
+        moveInput = context.ReadValue<Vector2>();
+        animator.SetFloat("InputX", moveInput.x);
+        animator.SetFloat("InputY", moveInput.y);
+    }
+
+    private void StartFootSteps()
+    {
+        playingFootSteps = true;
+        InvokeRepeating(nameof(PlayFootstep), 0f, footstepSpeed);
+    }
+    private void StopFootSteps()
+    {
+        playingFootSteps = false;
+        CancelInvoke(nameof(PlayFootstep));
+    }
+
+    private void PlayFootstep()
+    {
+        SoundEffectManager.Play("Footstep", true);
     }
 }
