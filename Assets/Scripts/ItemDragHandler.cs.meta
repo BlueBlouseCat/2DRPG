@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Menu/InventoryPage/ItemDragHandler.cs.meta
+guid: fa802a0e0815f7745b8d0ba446f9120d
+=======
 guid: e48634babd091a747b4b21035d150253
+>>>>>>> origin/main:Assets/Scripts/ItemDragHandler.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
