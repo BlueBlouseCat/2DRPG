@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b47bb9e862628643ae3f6bc387c3ae9, type: 3}
+  m_Name: OldManDialogue
+  m_EditorClassIdentifier: 
+  npcName: "\u795E\u79D8\u7684\u8001\u4EBA"
+  npcPortrait: {fileID: 21300000, guid: bfe0586c2c6b0494b9d50ea6c19778a9, type: 3}
+  dialogueLines:
+  - "\u4F60\u597D\uFF0C\u65C5\u884C\u8005\u3002"
+  - "\u4F60\u80FD\u5E2E\u5FD9\u5417\uFF1F"
+  - "\u8C22\u8C22\u3002"
+  - "\u6211\u5C31\u77E5\u9053\u4F60\u4F1A\u5E2E\u5FD9\uFF01"
+  - "\u54E6\uFF0C\u597D\u5427\u3002"
+  - "\u4E0B\u6B21\u5427\u3002"
+  - "\u795D\u4F60\u597D\u8FD0\uFF0C\u627E\u5230\u90A3\u4E9B\u836F\u6C34\uFF01"
+  - "\u8C22\u8C22\u4F60\u7684\u836F\u6C34\uFF01"
+  - "\u4E5F\u8BB8\u6211\u8981\u5F00\u4E2A\u5E97\u4E86\u3002"
+  autoProgressLines: 010000000000000100
+  endDialogueLines: 000000010001010001
+  autoProgressDelay: 1.5
+  typingSpeed: 0.05
+  voiceSound: {fileID: 8300000, guid: 54732f15a1d3aee47a22a7a3116ec5a7, type: 3}
+  voicePitch: 1
+  choices:
+  - dialogueIndex: 1
+    choices:
+    - "\u662F"
+    - "\u5426"
+    nextDialogueIndexes: 0200000004000000
+    givesQuest: 0100
+  questInProgressIndex: 6
+  questCompletedIndex: 7
+  quest: {fileID: 11400000, guid: d1b29e18dca48ab44a220e556d1a487f, type: 2}

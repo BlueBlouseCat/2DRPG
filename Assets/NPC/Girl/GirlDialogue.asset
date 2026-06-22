@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b47bb9e862628643ae3f6bc387c3ae9, type: 3}
+  m_Name: GirlDialogue
+  m_EditorClassIdentifier: 
+  npcName: "\u5B89\u67CF"
+  npcPortrait: {fileID: 21300000, guid: 37ec852b05fe4e04bbf3642811dc1e38, type: 3}
+  dialogueLines:
+  - "\u4F60\u597D\uFF01"
+  - "\u9700\u8981\u5E2E\u5FD9\u5417\uFF1F"
+  - "\u6211\u5F88\u5FD9\uFF0C\u518D\u89C1\u3002"
+  - "\u4F60\u786E\u5B9A\u5417\uFF1F"
+  - "\u597D\u7684\uFF0C\u518D\u89C1\u3002"
+  autoProgressLines: 0101010101
+  endDialogueLines: 0000010001
+  autoProgressDelay: 0.5
+  typingSpeed: 0.025
+  voiceSound: {fileID: 8300000, guid: 71505ffb93ddece40a7adf8b17688b61, type: 3}
+  voicePitch: 1
+  choices:
+  - dialogueIndex: 1
+    choices:
+    - "\u662F\u7684\u3002"
+    - "\u4E0D\u7528\u4E86\u3002"
+    nextDialogueIndexes: 0200000003000000
+  - dialogueIndex: 3
+    choices:
+    - "\u662F\uFF0C\u6211\u786E\u5B9A\u3002"
+    - "\u6211\u4E0D\u77E5\u9053\u3002"
+    nextDialogueIndexes: 0400000002000000

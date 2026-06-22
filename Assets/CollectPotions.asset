@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3151eb0e8c8679b40b6e7c3cf8a9c818, type: 3}
+  m_Name: CollectPotions
+  m_EditorClassIdentifier: 
+  questID: CollectPotionsdd6c686f-6a56-4c9a-ac95-5f35a0c9f811
+  questName: "\u6536\u96C6\u836F\u6C34"
+  description: "\u9700\u8981\u6536\u96C6\u836F\u6C34\u6765\u5E2E\u5FD9\uFF01"
+  objectives:
+  - objectiveID: 1
+    description: "\u6536\u96C65\u74F6\u836F\u6C34"
+    type: 0
+    requiredAmount: 5
+    currentAmount: 0
+  - objectiveID: 2
+    description: "\u6536\u96C62\u74F6\u7231\u5FC3\u836F\u6C34"
+    type: 0
+    requiredAmount: 2
+    currentAmount: 0
+  questRewards:
+  - type: 0
+    rewardID: 2
+    amount: 1
+  - type: 0
+    rewardID: 3
+    amount: 2

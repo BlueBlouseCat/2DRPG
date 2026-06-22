@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     Transform originalParent; // 原始槽位
     CanvasGroup canvasGroup;
@@ -12,9 +12,12 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public float minDropDistance = 2f;
     public float maxDropDistance = 3f;
 
+    private InventoryController inventoryController;
+
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        inventoryController = InventoryController.Instance;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -52,18 +55,34 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // 新槽有物品
             if(dropSlot.currentItem != null)
             {
-                dropSlot.currentItem.transform.SetParent(originalParent);
-                originalSlot.currentItem = dropSlot.currentItem;
-                dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                Item draggedItem = GetComponent<Item>();
+                Item targetItem = dropSlot.currentItem.GetComponent<Item>();
+
+                if(draggedItem.ID == targetItem.ID)
+                {
+                    targetItem.AddToStack(draggedItem.quantity);
+                    originalSlot.currentItem = null;
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    // 交换物品
+                    dropSlot.currentItem.transform.SetParent(originalParent);
+                    originalSlot.currentItem = dropSlot.currentItem;
+                    dropSlot.currentItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                
+                    transform.SetParent(dropSlot.transform);
+                    dropSlot.currentItem = gameObject;
+                    GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                }
             }
             else
             {
                 originalSlot.currentItem = null;
+                transform.SetParent(dropSlot.transform);
+                dropSlot.currentItem = gameObject;
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             }
-
-            // 被拖动的物品都要进新槽
-            transform.SetParent(dropSlot.transform);
-            dropSlot.currentItem = gameObject;
         }
         // 最后鼠标没落在槽位上，物品回去
         else
@@ -76,11 +95,10 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             else
             {
                 // 回到原始槽位
-                transform.SetParent(originalParent);   
+                transform.SetParent(originalParent);
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             }
         }
-
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
     bool isWithinInventory(Vector2 mousePosition)
@@ -91,7 +109,22 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     void DropItem(Slot originalSlot)
     {
-        originalSlot.currentItem = null;
+        Item item = GetComponent<Item>();
+        int quantity = item.quantity;
+
+        if(quantity > 1)
+        {
+            item.RemoveFromStack();
+
+            transform.SetParent(originalParent);
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+            quantity = 1;
+        }
+        else
+        {
+            originalSlot.currentItem = null;
+        }
 
         // 找到玩家位置
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -105,8 +138,54 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         Vector2 dropPosition = (Vector2)playerTransform.position + dropOffset;
         // 生成掉落物品
         GameObject dropItem = Instantiate(gameObject, dropPosition, Quaternion.identity);
+        Item droppedItem = dropItem.GetComponent<Item>();
+        droppedItem.quantity = 1;
         dropItem.GetComponent<BounceEffect>().StartBounce();
         // 删除UI上的
-        Destroy(gameObject);
+        if(quantity <= 1 && originalSlot.currentItem == null)
+        {
+            Destroy(gameObject);
+        }
+
+        InventoryController.Instance.RebuildItemCounts();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            SplitStack();
+        }
+    }
+
+    private void SplitStack()
+    {
+        Item item = GetComponent<Item>();
+        if(item == null || item.quantity <= 1) return;
+
+        int splitAmount = item.quantity / 2;
+        if(splitAmount <= 0) return;
+
+        item.RemoveFromStack(splitAmount);
+
+        GameObject newItem = item.CloneItem(splitAmount);
+
+        if(inventoryController == null || newItem == null) return;
+
+        foreach(Transform slotTransform in inventoryController.inventoryPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if(slot != null && slot.currentItem == null)
+            {
+                slot.currentItem = newItem;
+                newItem.transform.SetParent(slot.transform);
+                newItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                return;
+            }
+        }
+
+        // 没有空槽：返回原堆
+        item.AddToStack(splitAmount);
+        Destroy(newItem);
     }
 }
