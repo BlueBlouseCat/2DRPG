@@ -32,8 +32,13 @@ MonoBehaviour:
     - "\u662F\u7684\u3002"
     - "\u4E0D\u7528\u4E86\u3002"
     nextDialogueIndexes: 0200000003000000
+    givesQuest: 0000
   - dialogueIndex: 3
     choices:
     - "\u662F\uFF0C\u6211\u786E\u5B9A\u3002"
     - "\u6211\u4E0D\u77E5\u9053\u3002"
     nextDialogueIndexes: 0400000002000000
+    givesQuest: 0000
+  questInProgressIndex: 0
+  questCompletedIndex: 0
+  quest: {fileID: 0}

@@ -23,8 +23,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if(PauseController.IsGamePaused)
         {
-            rb.velocity = Vector2.zero; // 停止玩家移动
-            animator.SetBool("isWalking", false);
+            if(rb.velocity != Vector2.zero)
+            {
+                rb.velocity = Vector2.zero; // 停止玩家移动
+                StopMovementAnimations();
+            }
             // 停止脚步声
             StopFootSteps();
             return;
@@ -47,13 +50,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if(context.canceled)
         {
-            animator.SetBool("isWalking", false);
-            animator.SetFloat("LastInputX", moveInput.x);
-            animator.SetFloat("LastInputY", moveInput.y);
+            StopMovementAnimations();
         }
         moveInput = context.ReadValue<Vector2>();
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
+    }
+
+    void StopMovementAnimations()
+    {
+        animator.SetBool("isWalking", false);
+        animator.SetFloat("LastInputX", moveInput.x);
+        animator.SetFloat("LastInputY", moveInput.y);
     }
 
     private void StartFootSteps()

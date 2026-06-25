@@ -9,8 +9,10 @@ public class MapTransition : MonoBehaviour
     [SerializeField] PolygonCollider2D mapBoundry;
     CinemachineConfiner confiner;
     [SerializeField] Direction direction; 
-    [SerializeField] float addictivePos = 2f;
-    enum Direction {Up, Down, Left, Right}
+    [SerializeField] Transform teleportTargetPosition;
+    private float addictivePos = 2f;
+    
+    enum Direction {Up, Down, Left, Right, Teleport}
 
     void Awake()
     {
@@ -21,17 +23,32 @@ public class MapTransition : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            confiner.m_BoundingShape2D = mapBoundry;
-            UpdatePlayerPosition(collision.gameObject);
-
+            FadeTransition(collision.gameObject);
             MapController_Manual.Instance?.HighlightArea(mapBoundry.name); // mapBoundry是实际的地图边界，但由于每个地图边界的名字都和小地图对应上了，所以能正确高亮小地图
             MapController_Dynamic.Instance?.UpdateCurrentArea(mapBoundry.name);
         }
     }
 
+    async void FadeTransition(GameObject player)
+    {
+        PauseController.SetPause(true);
+        await ScreenFader.Instance.FadeOut();
+
+        confiner.m_BoundingShape2D = mapBoundry;
+        UpdatePlayerPosition(player);
+
+        await ScreenFader.Instance.FadeIn();
+        PauseController.SetPause(false);
+    }    
+
     // 防止经过传送点又被传送回去
     private void UpdatePlayerPosition(GameObject player)
     {
+        if(direction == Direction.Teleport)
+        {
+            player.transform.position = teleportTargetPosition.position;
+            return;
+        }
         Vector3 newPos = player.transform.position; // 玩家传送后的位置
 
         switch(direction)

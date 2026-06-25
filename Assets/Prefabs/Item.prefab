@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9111269126373044222}
   - component: {fileID: 1612487703355172972}
   - component: {fileID: 2953894836431114314}
-  - component: {fileID: -1927309858150301949}
   - component: {fileID: -2518192572643304319}
   - component: {fileID: -4284617025383488676}
   - component: {fileID: -1724766821456707248}
@@ -94,20 +93,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &-1927309858150301949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669687201751225674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e48634babd091a747b4b21035d150253, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minDropDistance: 2
-  maxDropDistance: 3
 --- !u!114 &-2518192572643304319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +108,8 @@ MonoBehaviour:
   ID: 1
   Name: "\u836F\u6C34"
   quantity: 1
+  buyPrice: 10
+  sellPriceMultiplier: 0.5
 --- !u!212 &-4284617025383488676
 SpriteRenderer:
   m_ObjectHideFlags: 0
